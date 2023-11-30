@@ -4,31 +4,38 @@
 #include "find_min_max.h"
 #include "utils.h"
 
-int main(int argc, char **argv) {
-  if (argc != 3) {
-    printf("Usage: %s seed arraysize\n", argv[0]);
-    return 1;
-  }
+int main(int argc, char **argv){
+	execv(argv);
+	// проверяем кол-во входных аргументов
+	if (argc != 3)
+	{
+		printf("Usage: %s seed arraysize\n", argv[0]);
+		return 1;
+	}
+	// проверяем seed
+	int seed = atoi(argv[1]);
+	if (seed <= 0)
+	{
+		printf("seed is a positive number\n");
+		return 1;
+	}
+	// проверяем размер массива
+	int array_size = atoi(argv[2]);
+	if (array_size <= 0)
+	{
+		printf("array_size is a positive number\n");
+		return 1;
+	}
+	// заполняем массив рандомными значениями, вызываем getMinMax для нахождения наименьшего и наибольшего значения
+	// освобождаем массив
+	int *array = malloc(array_size * sizeof(int));
+	GenerateArray(array, array_size, seed);
+	struct MinMax min_max = GetMinMax(array, 0, array_size);
+	free(array);
 
-  int seed = atoi(argv[1]);
-  if (seed <= 0) {
-    printf("seed is a positive number\n");
-    return 1;
-  }
+	// выводим минимальное и максимальное значение
+	printf("min: %d\n", min_max.min);
+	printf("max: %d\n", min_max.max);
 
-  int array_size = atoi(argv[2]);
-  if (array_size <= 0) {
-    printf("array_size is a positive number\n");
-    return 1;
-  }
-
-  int *array = malloc(array_size * sizeof(int));
-  GenerateArray(array, array_size, seed);
-  struct MinMax min_max = GetMinMax(array, 0, array_size);
-  free(array);
-
-  printf("min: %d\n", min_max.min);
-  printf("max: %d\n", min_max.max);
-
-  return 0;
+	return 0;
 }
